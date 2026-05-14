@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+pytest_results.txt
+pytest_results_full.txt
+test_output.txt
+
+# Reports (keep reports/ directory but ignore generated content)
+reports/*.xml
+reports/*.html
+
+# Temp files
+*.tmp
+*.temp
+
+# Generated documentation (not part of assignment spec)
+SDET_Test_Suite_Documentation.docx
+generate_documentation.py

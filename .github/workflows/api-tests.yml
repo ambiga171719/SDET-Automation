@@ -1,0 +1,42 @@
+name: API Tests with Playwright
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: [3.9, '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install Playwright browsers
+      run: python -m playwright install
+    
+    - name: Run API tests
+      run: pytest -v tests/ --html=reports/report.html --self-contained-html
+      env:
+        BASE_URL: https://jsonplaceholder.typicode.com
+    
+    - name: Upload test report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report-${{ matrix.python-version }}
+        path: reports/
+        retention-days: 30
