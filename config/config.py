@@ -8,4 +8,4 @@ HEADERS = {
     "Accept": "application/json"
 }
 
-API_TIMEOUT = 10000  # milliseconds
+API_TIMEOUT = 15000  # milliseconds
