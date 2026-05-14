@@ -152,29 +152,6 @@ class TestPostsPagination:
         assert data == []
 
 
-class TestConcurrentRequests:
-
-    @pytest.mark.performance
-    async def test_parallel_get_requests(self, posts_api):
-
-        start_time = time.perf_counter()
-
-        tasks = [
-            posts_api.get_post_by_id(i)
-            for i in range(1, 11)
-        ]
-
-        responses = await asyncio.gather(*tasks)
-
-        end_time = time.perf_counter()
-        elapsed_ms = (end_time - start_time) * 1000
-
-        for response in responses:
-            assert_status_code(response, 200)
-            assert_content_type(response)
-
-        assert_response_time(elapsed_ms, 500)
-
 
 class TestCreatePost:
 
@@ -448,16 +425,46 @@ class TestChainedRequests:
         assert delete_response.status in [200, 204]
 
 
+class TestConcurrentRequests:
+
+    @pytest.mark.performance
+    async def test_parallel_get_requests(self, posts_api):
+
+        start_time = time.perf_counter()
+
+        tasks = [
+            posts_api.get_post_by_id(i)
+            for i in range(1, 11)
+        ]
+
+        responses = await asyncio.gather(*tasks)
+
+        end_time = time.perf_counter()
+        elapsed_ms = (end_time - start_time) * 1000
+
+        print(f"\nPerformance Time: {elapsed_ms:.2f} ms")
+
+        for response in responses:
+            assert_status_code(response, 200)
+            assert_content_type(response)
+
+        assert_response_time(elapsed_ms, 500)
+
+
 class TestPerformance:
 
     @pytest.mark.performance
     async def test_get_all_posts_performance(self, posts_api):
 
         start_time = time.perf_counter()
+
         response = await posts_api.get_all_posts()
+
         end_time = time.perf_counter()
 
         elapsed_ms = (end_time - start_time) * 1000
+
+        print(f"\nPerformance Time: {elapsed_ms:.2f} ms")
 
         assert_status_code(response, 200)
         assert_response_time(elapsed_ms, 500)
@@ -466,15 +473,18 @@ class TestPerformance:
     async def test_get_post_by_id_performance(self, posts_api):
 
         start_time = time.perf_counter()
+
         response = await posts_api.get_post_by_id(1)
+
         end_time = time.perf_counter()
 
         elapsed_ms = (end_time - start_time) * 1000
 
+        print(f"\nPerformance Time: {elapsed_ms:.2f} ms")
+
         assert_status_code(response, 200)
         assert_response_time(elapsed_ms, 500)
-
-
+        
 class TestResponseHeaders:
     """Test response headers for all HTTP methods."""
 
