@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 *.so
 .Python
@@ -48,6 +49,7 @@ test_output.txt
 # Reports (keep reports/ directory but ignore generated content)
 reports/*.xml
 reports/*.html
+!reports/.gitkeep
 
 # Temp files
 *.tmp
